@@ -2,29 +2,26 @@ name: Daily Commit
 
 on:
   schedule:
-    # Runs once per day at 05:00 UTC
-    - cron: "0 5 * * *"
-  workflow_dispatch: # allows manual triggers if needed
+    - cron: "0 5 * * *"  # Runs every day at 05:00 UTC
+  workflow_dispatch:  # allows manual runs if desired
 
 jobs:
   daily-commit:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # IMPORTANT to allow push
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      # STEP WITH YOUR EMAIL IN THE NAME
       - name: "Daily commit by 24ds2000071@ds.study.iitm.ac.in"
         run: |
-          # Create or update a file with a timestamp
-          echo "Daily commit timestamp: $(date -u)" >> daily-commit-log.txt
+          echo "Daily commit timestamp: $(date -u)" >> daily-log.txt
 
-          # Configure Git
+          git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "GitHub Actions Bot"
 
-          # Commit and push
-          git add .
+          git add daily-log.txt
           git commit -m "Daily commit on $(date -u +'%Y-%m-%d %H:%M:%S')"
           git push
