@@ -20,18 +20,14 @@ jobs:
 
       - name: "Daily commit by 24ds2000071@ds.study.iitm.ac.in"
         run: |
-          # Update a file so we have something to commit
           echo "Daily commit timestamp: $(date -u)" >> daily-commit-log.txt
 
           git config --local user.name "github-actions[bot]"
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
 
-          # *** Pull to ensure our local is up-to-date with remote ***
           git pull --rebase origin main
 
-          # Stage and commit
           git add daily-commit-log.txt
           git commit -m "Daily commit on $(date -u +'%Y-%m-%d %H:%M:%S')"
 
-          # Push
           git push origin main
